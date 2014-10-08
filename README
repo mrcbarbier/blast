@@ -1,0 +1,87 @@
+Mode d'emploi
+
+===========================
+A) Usage normal :
+===========================
+
+
+1) PARAMETRES:
+ - les parametres de simulation sont dans specs.h
+ - la configuration initiale (voir dossier initconfig):
+    - doit se nommer "initconfig.dat" et se presenter comme deux colonnes x et y entre 0 et 1
+    
+    - celle par defaut a 200k particules pour fraction volumique initiale 0.2;
+        les particules ne sont pas ordonnees donc tout nombre inferieur est ok 
+         (les particules seront uniformement reparties dans l'espace)
+        En prenant beaucoup moins de particules, on peut se permettre une frac. vol.
+        supérieure sans risque de recouvrements (overlaps)
+        
+    - pour generer une autre configuration de spheres dures:
+       script base sur la methode du pivot (cf Krauth http://www.lps.ens.fr/~krauth/ )
+       je ne retrouve plus ce script, mais si j'arrive à l'extraire de mon ancien
+       disque dur, je l'ajouterai dans le dossier initconfig et amenderai ce Readme.
+        
+    - pour faire un trou dans une configuration uniforme: 
+        > python emptycenter.py   (changer le rayon du trou dans le script)
+        cree une copie trouee de initconfig.dat nommee initconfig2.dat
+       dans ce cas il y a moins de particules, donc ne pas essayer avec 200k (crash)
+    
+
+2) RECOMPILER avec
+> bash compile.sh
+ou
+> g++ -o ./simu  ./freec3clean.cpp ./fonctions.cpp -O2 -lm -I ./
+
+3) EXECUTER ./simu  (affiche regulierement le temps ecoule et le nombre d'overlaps depuis le debut)
+
+4) Les resultats sont dans le dossier results/
+ Pour plotter automatiquement les positions et vitesses: python visu.py (requiert matplotlib)
+
+
+
+===========================
+B) Usage de masse (echantillonnage de parametre & cluster pbs)
+===========================
+
+
+Aller dans le dossier batch
+Changer les valeurs des parametres dans le script specmaker.py, puis le lancer
+
+> python specmaker.py
+
+Effet:
+#Genere, pour chaque valeur du parametre a echantilloner, un dossier contenant:
+# - spec.h approprie
+# - une copie de la configuration initiale
+# - xxx.out     l'executable
+# - xxx.pbs     le job a envoyer sur le cluster
+#Genere aussi une liste de ces dossiers pour subber.py
+
+> python subber.py  
+pour envoyer tous les jobs sur un cluster par "qsub"
+
+
+===========================
+C) Modifications :
+===========================
+
+
+Le code suit la logique elementaire des Event Driven Molecular Dynamics, qui se trouve facilement dans les livres.
+
+Voir liste des variables importantes au debut de freec3clean.cpp
+
+Les valeurs collisionnelles pourront etre calculees en ajoutant un bout de code vers les lignes ~600, ou a lieu la collision.
+
+
+===========================
+D) Profiling graphique :
+===========================
+
+
+Copier le contenu du dossier profiling vers le dossier ou se trouve ./simu, et executer
+>bash profilingscript.sh
+ 
+Le resultat du profiling sera imprime dans output.svg
+(requiert valgrind et graphviz)
+
+NB: valgrind rend le programme extremement lent, donc tester sur des tres petites valeurs de parametres
