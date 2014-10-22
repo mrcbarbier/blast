@@ -21,6 +21,7 @@
 //Initial configuration
 #define partinit .3		// Initial energetic particles (if >1: nb of particles, if <1: radius/width)
 #define blastMach -200		//Mach number of particles in blast (if >0 finite temperature outside, if<0 infinite Mach)
+#define ideal_ambient 1		//For temperature outside, is the ambient gas ideal? (i.e. no collisions between non-blast)
 #define planar 0		// 0= radial shock, 1= planar shock
 #define radinit 0			// 1= Initial velocity of blast particles purely radial
 #define reload 0			// TODO: Reload config (name in " " or 0 = no)
