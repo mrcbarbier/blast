@@ -290,7 +290,8 @@ double init(double **r[nsys], double **v[nsys], double sigma, double m[nu],
             for(j=i+1 ; j < nu ; j ++)
             {
                 if( ideal_ambient==0 && (v[sys][i][dim] > epsilon || v[sys][j][dim] > epsilon ) ||
-                  ( ideal_ambient!=0 && ( blastcol[sys][i]>0 ||  blastcol[sys][j]>0 )){
+                  ( ideal_ambient!=0 && ( blastcol[sys][i]>0 ||  blastcol[sys][j]>0 )) )
+                  {
                     tij = timeval(r[sys][i],r[sys][j],v[sys][i],v[sys][j], sigma);
                     
                     if(tij>0.)
